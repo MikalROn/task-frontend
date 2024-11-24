@@ -1,0 +1,40 @@
+<mat-table [dataSource]="task">
+
+    <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef>Descricao</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          {{ item.descricao }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          {{ item.completo }}
+        </mat-cell>
+      </ng-container>
+    
+        <mat-cell *matCellDef="let item" class="action-column">
+          <button
+            mat-icon-button
+            color="primary"
+            aria-label="Editar Curso"
+            (click)="onEdit(item)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+    
+          <button
+            mat-icon-button
+            color="warn"
+            aria-label="Remover Curso"
+            (click)="onDelete(item)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      
+
+</mat-table>
+
+  
