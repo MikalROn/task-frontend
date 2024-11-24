@@ -7,14 +7,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { TaskService } from '../services/task.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { CommonModule } from '@angular/common'; // Importação do CommonModule
+import { CommonModule } from '@angular/common'; 
+import { HttpClientModule } from '@angular/common/http'; // Importa o HttpClientModule
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrl: './task.component.css',
   standalone: true,
-  imports: [MatTableModule, MatIconModule, MatButtonModule, CommonModule]
+  imports: [MatTableModule, MatIconModule, MatButtonModule, CommonModule, HttpClientModule]
 })
 export class TaskComponent implements OnInit{
     tasks: Task[] = [];
@@ -32,7 +33,7 @@ export class TaskComponent implements OnInit{
     ngOnInit(): void {
       this.taskService.list().subscribe({
         next: (data) => (this.tasks = data),
-        error: (err) => console.error('Erro ao carregar tarefas:', err),
+        error: (err) => console.error('Erro ao carregar tarefas:', err)
       });
     }
 

@@ -8,7 +8,7 @@ import { first } from 'rxjs';
 })
 export class TaskService {
 
-  private readonly URL = '/api/task'; // Lembar da configuração de proxy burro 
+  private readonly URL = '/api/task';
 
   constructor(private httpCLient: HttpClient) { }
 
