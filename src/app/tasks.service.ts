@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Task } from '../model/task';
+import { Task } from './model/task';
+import { HttpClient } from '@angular/common/http';
 import { first } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
-
+export class TasksService {
   private readonly URL = '/api/task';
 
   constructor(private httpCLient: HttpClient) { }

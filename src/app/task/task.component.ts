@@ -5,7 +5,7 @@ import { Task } from '../model/task';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { TaskService } from '../services/task.service';
+import { TasksService } from '../tasks.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { CommonModule } from '@angular/common'; 
 import { HttpClientModule } from '@angular/common/http'; // Importa o HttpClientModule
@@ -27,7 +27,7 @@ export class TaskComponent implements OnInit{
     
     readonly displayedColumns = ['id', 'descricao', 'completo', 'actions'];
 
-    constructor(private taskService: TaskService) {}
+    constructor(private taskService: TasksService) {}
 
 
     ngOnInit(): void {
