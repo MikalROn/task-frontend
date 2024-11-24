@@ -1,40 +1,44 @@
-<mat-table [dataSource]="task">
+<mat-table [dataSource]="tasks" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="category">
-        <mat-header-cell *matHeaderCellDef>Descricao</mat-header-cell>
-        <mat-cell *matCellDef="let item">
-          {{ item.descricao }}
-        </mat-cell>
-      </ng-container>
+  <!-- Coluna: Descrição -->
+  <ng-container matColumnDef="descricao">
+    <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+    <mat-cell *matCellDef="let item">{{ item.descricao }}</mat-cell>
+  </ng-container>
 
-      <ng-container matColumnDef="category">
-        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-        <mat-cell *matCellDef="let item">
-          {{ item.completo }}
-        </mat-cell>
-      </ng-container>
-    
-        <mat-cell *matCellDef="let item" class="action-column">
-          <button
-            mat-icon-button
-            color="primary"
-            aria-label="Editar Curso"
-            (click)="onEdit(item)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-    
-          <button
-            mat-icon-button
-            color="warn"
-            aria-label="Remover Curso"
-            (click)="onDelete(item)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-cell>
-      
+  <!-- Coluna: Status -->
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+    <mat-cell *matCellDef="let item">{{ item.completo ? 'Feito 👍!' : 'Incompleto, vá terminir 🏃...' }}</mat-cell>
+  </ng-container>
 
+  <!-- Coluna: Ações -->
+  <ng-container matColumnDef="acoes">
+    <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+    <mat-cell *matCellDef="let item" class="action-column">
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Editar Curso"
+        (click)="onEdit(item)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Remover Curso"
+        (click)="onDelete(item)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Linha de Cabeçalho -->
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+  <!-- Linha de Dados -->
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-
-  
