@@ -2,96 +2,100 @@
 <app-popup-editar></app-popup-editar>
 
 <div class="container mt-4">
-  <form id="taskForm" class="mb-4" (ngSubmit)="onAdd()">
+  <form class="mb-4" (ngSubmit)="onAdd()">
     <div class="row">
       <!-- Campo Descrição -->
-      <div class="col w-100">
-        <label for="descricao" class="form-label">Descrição</label>
-        <input
-          type="text"
-          class="form-control"
-          id="descricao"
-          [(ngModel)]="task.descricao"
-          name="descricao"
-          placeholder="Digite a descrição da tarefa"
-          required
-        />
-        <input type="hidden" name="completo" value="false">
+      <div class="col-12">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Descrição</mat-label>
+          <input
+            matInput
+            type="text"
+            id="descricao"
+            [(ngModel)]="task.descricao"
+            name="descricao"
+            placeholder="Digite a descrição da tarefa"
+            required
+          />
+          <mat-error *ngIf="task.descricao?.length === 0">Descrição é obrigatória</mat-error>
+        </mat-form-field>
       </div>
-
-      
 
       <!-- Botão Salvar -->
       <div class="col-md-3 d-flex align-items-end">
-        <button type="submit" class="btn btn-success w-100">Salvar</button>
+        <button mat-raised-button color="primary" class="w-100" type="submit">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
       </div>
     </div>
   </form>
 </div>
 
-
 <div *ngIf="tasks && tasks.length > 0; else noTasks">
-  <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Descrição</th>
-        <th scope="col">Status</th>
-        <th scope="col">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of tasks">
-        <!-- Coluna: Descrição -->
-        <td>{{ item.descricao }}</td>
+  <mat-table [dataSource]="tasks" class="mat-elevation-z8">
+    <ng-container matColumnDef="descricao">
+      <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+      <mat-cell *matCellDef="let task">{{ task.descricao }}</mat-cell>
+    </ng-container>
 
-        <!-- Coluna: Status -->
-        <td>{{ item.completo ? 'Feito 👍!' : 'Incompleto, vá terminar 🏃...' }}</td>
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+      <mat-cell *matCellDef="let task">
+        <mat-chip [color]="task.completo ? 'primary' : 'warn'">
+          {{ task.completo ? 'Feito 👍!' : 'Incompleto' }}
+        </mat-chip>
+      </mat-cell>
+    </ng-container>
 
-        <!-- Coluna: Ações -->
-        <td>
-          <button
-            *ngIf="!item.completo"
-            type="button"
-            class="btn btn-primary btn-sm m-1"
-            (click)="onFinish(item)"
-          ><i class="bi bi-check"></i>
-            Concluir
-          </button>
-
-          <button
-          *ngIf="item.completo"
-          type="button"
-          class="btn btn-outline-primary btn-sm m-1"
-          (click)="onUndoFinish(item)"
-          ><i class="bi bi-x"></i>
-          Desfazer Conclusao 
+    <ng-container matColumnDef="acoes">
+      <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+      <mat-cell *matCellDef="let task">
+        <button
+          *ngIf="!task.completo"
+          mat-icon-button
+          color="accent"
+          (click)="onFinish(task)"
+        >
+          <mat-icon>check_circle</mat-icon>
         </button>
 
-          <button
-            type="button"
-            class="btn btn-warning btn-sm"
-            (click)="onEdit(item)"
-            ><i class="bi bi-pencil"></i>
-            Editar 
-          </button>
+        <button
+          *ngIf="task.completo"
+          mat-icon-button
+          color="warn"
+          (click)="onUndoFinish(task)"
+        >
+          <mat-icon>undo</mat-icon>
+        </button>
 
-          <button
-            type="button"
-            class="btn btn-danger btn-sm m-1"
-            (click)="onDelete(item)"
-          ><i class="bi bi-trash"></i>
-            Excluir
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div>
-    <div class="col">
-        Total de tasks - {{ totalElements }}
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="onEdit(task)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="onDelete(task)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <mat-chip color="primary">Total de tarefas: {{ totalElements }}</mat-chip>
     </div>
-    <div class="col">
-        Número de páginas - {{ totalPages }}
+    <div class="col-md-6 text-end">
+      <mat-chip color="accent">Número de páginas: {{ totalPages }}</mat-chip>
     </div>
   </div>
 </div>

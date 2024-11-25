@@ -1,5 +1,4 @@
-
-import { Component, ViewChild , Input, OnInit, Output} from '@angular/core';
+import { Component, ViewChild , Input, OnInit, Output } from '@angular/core';
 
 import { Task } from '../model/task';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,19 +10,31 @@ import { TaskPage } from '../model/taskPage';
 import { FormsModule } from '@angular/forms';
 import { PopupExcluirComponent } from '../popups/popup-excluir/popup-excluir.component';
 import { PopupEditarComponent } from "../popups/popup-editar/popup-editar.component";
-import { error } from 'console';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';  // Corrigido para MatChipsModule
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrl: './task.component.css',
+  styleUrls: ['./task.component.css'],
   standalone: true,
   imports: [
-    MatTableModule, MatIconModule, MatButtonModule, CommonModule,
-    FormsModule, PopupExcluirComponent,
-    PopupEditarComponent
-]
+    CommonModule,
+    FormsModule,
+    PopupExcluirComponent,
+    PopupEditarComponent,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule, 
+    MatToolbarModule,
+    MatCardModule
+  ]
 })
 export class TaskComponent implements OnInit{
 
@@ -35,7 +46,7 @@ export class TaskComponent implements OnInit{
     totalPages: number = 0;
 
     
-    readonly displayedColumns = ['descricao', 'completo', 'actions'];
+    readonly displayedColumns = ['descricao', 'status', 'acoes'];
 
     constructor(private taskService: TasksService) {}
 
