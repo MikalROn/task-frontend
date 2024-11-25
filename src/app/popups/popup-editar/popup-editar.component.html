@@ -1,0 +1,14 @@
+<div class="popup-overlay" *ngIf="isVisible">
+    <div class="popup-content">
+      <h3>Editar Tarefa</h3>
+      <div>
+        <label for="descricao">Descrição:</label>
+        <input class="input-group rounded-2" [(ngModel)]="task.descricao" id="descricao" />
+      </div>
+      <div>
+        <button class="btn btn-success m-1" (click)="onSave()">Salvar</button>
+        <button class="btn btn-danger m-1" (click)="onCancel()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  

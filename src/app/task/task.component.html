@@ -1,8 +1,11 @@
+<app-popup-excluir></app-popup-excluir>
+<app-popup-editar></app-popup-editar>
+
 <div class="container mt-4">
   <form id="taskForm" class="mb-4" (ngSubmit)="onAdd()">
-    <div class="row g-3">
+    <div class="row">
       <!-- Campo Descrição -->
-      <div class="col-md-6">
+      <div class="col w-100">
         <label for="descricao" class="form-label">Descrição</label>
         <input
           type="text"
@@ -13,13 +16,14 @@
           placeholder="Digite a descrição da tarefa"
           required
         />
+        <input type="hidden" name="completo" value="false">
       </div>
 
-      <input type="hidden" name="completo" value="false">
+      
 
       <!-- Botão Salvar -->
       <div class="col-md-3 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">Salvar</button>
+        <button type="submit" class="btn btn-success w-100">Salvar</button>
       </div>
     </div>
   </form>

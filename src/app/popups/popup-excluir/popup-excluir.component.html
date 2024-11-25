@@ -1,0 +1,12 @@
+<div class="popup-overlay rd" *ngIf="isVisible">
+    <div class="popup">
+      <h2>Tem certeza que deseja excluir?</h2>
+
+          <button class="btn btn-danger m-1"  (click)="onConfirm()">Excluir</button>
+
+
+          <button class="btn btn-primary m-1" (click)="onCancel()">Fechar janela</button>
+
+    </div>
+  </div>
+  

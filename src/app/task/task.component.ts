@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, ViewChild , Input, OnInit, Output} from '@angular/core';
 
 import { Task } from '../model/task';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,9 @@ import { TasksService } from '../service/tasks.service';
 import { CommonModule } from '@angular/common'; 
 import { TaskPage } from '../model/taskPage';
 import { FormsModule } from '@angular/forms';
+import { PopupExcluirComponent } from '../popups/popup-excluir/popup-excluir.component';
+import { PopupEditarComponent } from "../popups/popup-editar/popup-editar.component";
+import { error } from 'console';
 
 
 @Component({
@@ -18,10 +21,14 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [
     MatTableModule, MatIconModule, MatButtonModule, CommonModule,
-    FormsModule
-  ]
+    FormsModule, PopupExcluirComponent,
+    PopupEditarComponent
+]
 })
 export class TaskComponent implements OnInit{
+
+    @ViewChild(PopupEditarComponent) popupEditar!: PopupEditarComponent;
+    @ViewChild(PopupExcluirComponent) popupExcluir!: PopupExcluirComponent;
     @Input() tasks: Task[] = [];
     task: any = {descricao: "", completo: false};
     totalElements: number = 0;
@@ -64,19 +71,61 @@ export class TaskComponent implements OnInit{
         }
       );
     }
-  
-    onEdit(task: Task) {
+
+    ngAfterViewInit(): void {
+      // Garantir que o @ViewChild tenha sido inicializado
+      if (this.popupExcluir) {
+        console.log('popupExcluir está disponível');
+      }
+      if (this.popupEditar) {
+        console.log('popupEditar está disponível');
+      }
     }
   
+    onEdit(task: Task) {
+       let copiaTask = {...task}
+
+       this.popupEditar.open(copiaTask);
+
+       this.popupEditar.response.subscribe(
+         (confirm: boolean) => {
+            if (confirm) {
+              this.popupEditar.taskEdited.subscribe(
+                (task: Task) => {
+                    this.taskService.save(task).subscribe(
+                      () => this.carregarTasks(),
+                      (error) => console.log(error) 
+                    );    
+                }, error => console.log(error)
+               )
+            }
+          }
+        );
+        }
+       
+
+       
+  
     onDelete(task: Task) {
-      this.taskService.remove(task._id).subscribe(
-        (task) => {
-          this.carregarTasks();
-        },
-        (error) => {
-          console.error('Erro ao deletar tarefa:', error);
+
+      this.popupExcluir.open();
+
+      this.popupExcluir.response.subscribe(
+        (confirm: boolean) => {
+          if (confirm) {
+            this.taskService.remove(task._id).subscribe(
+              () => {
+                this.carregarTasks();
+              },
+              (error) => {
+                console.error('Erro ao deletar tarefa:', error);
+              }
+            );
+          }
         }
       );
+
+      
     }
 
     onFinish(task: Task) {
