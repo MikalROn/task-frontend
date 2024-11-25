@@ -5,47 +5,56 @@ import { Task } from '../model/task';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { TasksService } from '../tasks.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { TasksService } from '../service/tasks.service';
 import { CommonModule } from '@angular/common'; 
-import { HttpClientModule } from '@angular/common/http'; // Importa o HttpClientModule
+import { TaskPage } from '../model/taskPage';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrl: './task.component.css',
   standalone: true,
-  imports: [MatTableModule, MatIconModule, MatButtonModule, CommonModule, HttpClientModule]
+  imports: [
+    MatTableModule, MatIconModule, MatButtonModule, CommonModule,
+    FormsModule
+  ]
 })
 export class TaskComponent implements OnInit{
-    tasks: Task[] = [];
-
-    @Output() add = new EventEmitter(false);
-    @Output() edit = new EventEmitter(false);
-    @Output() remove = new EventEmitter(false);
+    @Input() tasks: Task[] = [];
+    totalElements: number = 0;
+    totalPages: number = 0;
 
     
-    readonly displayedColumns = ['id', 'descricao', 'completo', 'actions'];
+    readonly displayedColumns = ['descricao', 'completo', 'actions'];
 
     constructor(private taskService: TasksService) {}
 
 
     ngOnInit(): void {
-      this.taskService.list().subscribe({
-        next: (data) => (this.tasks = data),
-        error: (err) => console.error('Erro ao carregar tarefas:', err)
-      });
+      this.taskService.list().subscribe(
+        (dados: any) => {
+          console.log(dados);
+          this.tasks = dados.tasks; // Extraia o array de tarefas
+          this.totalElements = dados.totalElements; // (Opcional) Use isso para controle da paginação
+          this.totalPages = dados.totalPages;
+        }
+      );
     }
 
     onAdd() {
-      this.add.emit(true);
     }
   
     onEdit(task: Task) {
-      this.edit.emit(task);
+      console.log(task);
     }
   
     onDelete(task: Task) {
-      this.remove.emit(task);
+      console.log(task);
+    }
+
+    onFinish(task: Task) {
+      console.log(task);
     }
 }

@@ -1,44 +1,87 @@
-<mat-table [dataSource]="tasks" class="mat-elevation-z8">
+<div class="container mt-4">
+  <form id="taskForm" class="mb-4">
+    <div class="row g-3">
+      <!-- Campo Descrição -->
+      <div class="col-md-6">
+        <label for="descricao" class="form-label">Descrição</label>
+        <input
+          type="text"
+          class="form-control"
+          id="descricao"
+          placeholder="Digite a descrição da tarefa"
+          required
+        />
+      </div>
 
-  <!-- Coluna: Descrição -->
-  <ng-container matColumnDef="descricao">
-    <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
-    <mat-cell *matCellDef="let item">{{ item.descricao }}</mat-cell>
-  </ng-container>
+      <input type="hidden" name="completo" value="false">
 
-  <!-- Coluna: Status -->
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-    <mat-cell *matCellDef="let item">{{ item.completo ? 'Feito 👍!' : 'Incompleto, vá terminir 🏃...' }}</mat-cell>
-  </ng-container>
+      <!-- Botão Salvar -->
+      <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Salvar</button>
+      </div>
+    </div>
+  </form>
+</div>
 
-  <!-- Coluna: Ações -->
-  <ng-container matColumnDef="acoes">
-    <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-    <mat-cell *matCellDef="let item" class="action-column">
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Editar Curso"
-        (click)="onEdit(item)"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
+<div *ngIf="tasks && tasks.length > 0; else noTasks">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Descrição</th>
+        <th scope="col">Status</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tasks">
+        <!-- Coluna: Descrição -->
+        <td>{{ item.descricao }}</td>
 
-      <button
-        mat-icon-button
-        color="warn"
-        aria-label="Remover Curso"
-        (click)="onDelete(item)"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-cell>
-  </ng-container>
+        <!-- Coluna: Status -->
+        <td>{{ item.completo ? 'Feito 👍!' : 'Incompleto, vá terminar 🏃...' }}</td>
 
-  <!-- Linha de Cabeçalho -->
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <!-- Coluna: Ações -->
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm m-1"
+            (click)="onFinish(item)"
+          ><i class="bi bi-check"></i>
+            Concluir
+          </button>
 
-  <!-- Linha de Dados -->
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            (click)="onEdit(item)"
+            ><i class="bi bi-check"></i>
+            Editar 
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm m-1"
+            (click)="onDelete(item)"
+          ><i class="bi bi-trash"></i>
+            Excluir
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <div class="col">
+        Total de tasks - {{ totalElements }}
+    </div>
+    <div class="col">
+        Numero de páginas - {{ totalPages }}
+    </div>
+  </div>
+</div>
+
+<!-- Template de mensagem caso não tenha tarefas -->
+<ng-template #noTasks>
+  <div class="alert alert-info text-center mt-3" role="alert">
+    Nenhuma tarefa encontrada! Adicione uma nova para começar.
+  </div>
+</ng-template>
