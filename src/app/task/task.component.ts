@@ -141,4 +141,12 @@ export class TaskComponent implements OnInit{
       }
       
     }
+
+    onUndoFinish(task: Task){
+      if(task.completo){
+        this.taskService.cancelarConclusaoTask(task._id).subscribe(
+          () => this.carregarTasks(), (error) => console.log(error)
+        );
+      }
+    }
 }

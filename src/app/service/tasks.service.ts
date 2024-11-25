@@ -51,4 +51,9 @@ export class TasksService {
     return this.httpCLient.get<Task>(`${this.URL}/completar-task/${id}`).pipe(first());
   }
 
+  cancelarConclusaoTask(id: string) {
+    return this.httpCLient.get<Task>(`${this.URL}/cancelar-conclusao-task/${id}`)
+    .pipe(first());
+  }
+
 }

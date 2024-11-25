@@ -59,6 +59,15 @@
           </button>
 
           <button
+          *ngIf="item.completo"
+          type="button"
+          class="btn btn-outline-primary btn-sm m-1"
+          (click)="onUndoFinish(item)"
+          ><i class="bi bi-x"></i>
+          Desfazer Conclusao 
+        </button>
+
+          <button
             type="button"
             class="btn btn-warning btn-sm"
             (click)="onEdit(item)"
