@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <form id="taskForm" class="mb-4">
+  <form id="taskForm" class="mb-4" (ngSubmit)="onAdd()">
     <div class="row g-3">
       <!-- Campo Descrição -->
       <div class="col-md-6">
@@ -8,6 +8,8 @@
           type="text"
           class="form-control"
           id="descricao"
+          [(ngModel)]="task.descricao"
+          name="descricao"
           placeholder="Digite a descrição da tarefa"
           required
         />
@@ -22,6 +24,7 @@
     </div>
   </form>
 </div>
+
 
 <div *ngIf="tasks && tasks.length > 0; else noTasks">
   <table class="table table-striped table-bordered">

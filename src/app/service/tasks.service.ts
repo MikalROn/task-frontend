@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../model/task';
 import { HttpClient } from '@angular/common/http';
-import { first } from 'rxjs';
+import { of, catchError, first } from 'rxjs';
 
 
 @Injectable({
@@ -14,7 +14,11 @@ export class TasksService {
 
   list() {
     return this.httpCLient.get<Task[]>(this.URL).pipe(
-      first()
+      first(),
+      catchError(error => {
+        console.error('Erro ao buscar tasks', error);
+        return of([]); // Array vazio
+      })
     );
   }
 

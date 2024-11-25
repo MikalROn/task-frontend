@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TaskComponent implements OnInit{
     @Input() tasks: Task[] = [];
+    task: any = {descricao: "", completo: false};
     totalElements: number = 0;
     totalPages: number = 0;
 
@@ -32,7 +33,7 @@ export class TaskComponent implements OnInit{
     constructor(private taskService: TasksService) {}
 
 
-    ngOnInit(): void {
+    carregarTasks(): void {
       this.taskService.list().subscribe(
         (dados: any) => {
           console.log(dados);
@@ -43,18 +44,49 @@ export class TaskComponent implements OnInit{
       );
     }
 
+    ngOnInit(): void {
+      this.carregarTasks();
+    }
+
     onAdd() {
+      const novaTask: any = {
+        descricao: this.task.descricao,
+        completo: false
+      };
+      console.log(novaTask);
+    
+      this.taskService.save(novaTask).subscribe(
+        (task) => {
+          this.carregarTasks();
+        },
+        (error) => {
+          console.error('Erro ao adicionar tarefa:', error);
+        }
+      );
     }
   
     onEdit(task: Task) {
-      console.log(task);
     }
   
     onDelete(task: Task) {
-      console.log(task);
+      this.taskService.remove(task._id).subscribe(
+        (task) => {
+          this.carregarTasks();
+        },
+        (error) => {
+          console.error('Erro ao deletar tarefa:', error);
+        }
+      );
     }
 
     onFinish(task: Task) {
-      console.log(task);
+      this.taskService.completeTask(task._id).subscribe(
+        (task) => {
+          this.carregarTasks();
+        },
+        (error) => {
+          console.error('Erro ao completar tarefa:', error);
+        }
+      );
     }
 }
