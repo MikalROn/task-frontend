@@ -80,13 +80,16 @@ export class TaskComponent implements OnInit{
     }
 
     onFinish(task: Task) {
-      this.taskService.completeTask(task._id).subscribe(
-        (task) => {
-          this.carregarTasks();
-        },
-        (error) => {
-          console.error('Erro ao completar tarefa:', error);
-        }
-      );
+      if(!task.completo){
+        this.taskService.completeTask(task._id).subscribe(
+          (task) => {
+            this.carregarTasks();
+          },
+          (error) => {
+            console.error('Erro ao completar tarefa:', error);
+          }
+        );
+      }
+      
     }
 }

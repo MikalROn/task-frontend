@@ -46,7 +46,7 @@
         <!-- Coluna: Ações -->
         <td>
           <button
-            *ngIf="item.completo"
+            *ngIf="!item.completo"
             type="button"
             class="btn btn-primary btn-sm m-1"
             (click)="onFinish(item)"
